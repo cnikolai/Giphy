@@ -1,0 +1,32 @@
+body {
+  background-image: url("../images/flag.png");
+  background-repeat: no-repeat;
+}
+
+h1 {
+  font-size: 24pt;
+}
+
+h1, div {
+    padding: 10px;
+}
+
+button {
+  height: 25px;
+  width: 150px;
+  background-color: #6969ee;
+  margin: 10px;
+  color: white;
+}
+
+#results {
+  width: 1000px;
+}
+
+#newsearch {
+  float: right;
+}
+
+#outerdiv {
+  display: inline-block;
+}

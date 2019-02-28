@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Giphy Search Engine</title>
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/reset.css"/> -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
+</head>
+<body>
+  <div id="container">
+    <div id="buttons">       
+    </div> 
+    <div id="results">
+    </div>
+    <div id="newsearch">        
+    </div>
+  </div>
+  
+
+
+  <!-- JAVASCRIPT  -->
+  <!-- ========================================= -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+  var categories = ["math","science","space","nasa","hamster","computer"]; 
+
+  //dynamically create buttons for all of the categories
+  var createButtons = function() {
+     categories.forEach(function (category) {
+        //create a button here
+        var button = $('<button>');
+        button.attr({value: category});
+        button.on("click", function () {
+            searchGiphy(category);
+        });
+        button.text(category);
+        //append the button to the DOM
+        $('#buttons').append(button);
+     });
+  }
+  createButtons();
+
+  //build the query string and ajax
+  var displayResults = function (response) {
+      // ref to the image
+      var image = this;
+      
+      console.log(response);
+      $('#results').empty();
+      for (var i = 0; i < 10; i++) {
+        console.log("*****");
+        console.log(response.data[i]);
+        var outerdiv = $('<div>');
+        outerdiv.attr("id", "outerdiv");
+        //put the rating in there too
+        var div = $('<div>');
+        div.attr({width: "300px", height: "300px"});
+        div.text("Rating: " + response.data[i].rating);
+        outerdiv.append(div);
+        $('#results').append(outerdiv);
+        // var iframe = $('<iframe>');
+        // iframe.attr({width: "300px", height: "300px", src: response.data[i].embed_url});
+        // outerdiv.append(iframe);
+        var a = $('<a>')
+        a.attr("href",response.data[i].images.downsized_still.url)
+        outerdiv.append(a);
+        var img = $('<img>');
+        img.attr({width: "300px", height: "300px", src: response.data[i].images.downsized.url});
+        a.html(img);
+        
+        // add click event
+	    a.on("click", function() { 
+            // get the src of the image
+            var src = jQuery(image).attr("src");
+
+            // change the image
+            if(jQuery(src.split("/")).last()[0] === "giphy_s.gif")
+                jQuery(image).attr('src', src.replace('_s.gif', '.gif'));
+            else
+                jQuery(image).attr('src', src.replace('.gif', '_s.gif'));
+        });
+      }
+   };
+
+//    https://gist.github.com/coclav/5760690
+
+   var searchGiphy = function(category) {
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q="+category+"&api_key=dc6zaTOxFJmzC&limit=10";
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      displayResults(response);
+    });
+   };
+
+
+  </script>
+  <!-- <script type="text/javascript" src="assets/javascript/giphy.js"></script> -->
+</body>
+</html>
