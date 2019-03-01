@@ -11,12 +11,14 @@ h1, div {
     padding: 10px;
 }
 
-button {
-  height: 25px;
-  width: 150px;
+button, .submit {
+  height: 30px;
+  width: 130px;
   background-color: #6969ee;
   margin: 10px;
   color: white;
+  font-size: 10pt;
+  border-radius: 8px;
 }
 
 #results {
@@ -29,4 +31,8 @@ button {
 
 #outerdiv {
   display: inline-block;
+}
+
+aside {
+  float: right;
 }

@@ -10,12 +10,20 @@
 </head>
 <body>
   <div id="container">
+      <aside>
+          <div>
+            <label>enter a new category</label><br>
+            <input id="newcategory" type="text" value=""><br>
+            <input class="submit" type="submit" value="Add New Category" onclick="createNewCatetory()">
+          </div>
+        </aside>
     <div id="buttons">       
     </div> 
     <div id="results">
     </div>
     <div id="newsearch">        
     </div>
+    
   </div>
   
 
@@ -44,9 +52,6 @@
 
   //build the query string and ajax
   var displayResults = function (response) {
-      // ref to the image
-      var image = this;
-      
       console.log(response);
       $('#results').empty();
       for (var i = 0; i < 10; i++) {
@@ -60,26 +65,29 @@
         div.text("Rating: " + response.data[i].rating);
         outerdiv.append(div);
         $('#results').append(outerdiv);
-        // var iframe = $('<iframe>');
-        // iframe.attr({width: "300px", height: "300px", src: response.data[i].embed_url});
-        // outerdiv.append(iframe);
-        var a = $('<a>')
-        a.attr("href",response.data[i].images.downsized_still.url)
-        outerdiv.append(a);
-        var img = $('<img>');
-        img.attr({width: "300px", height: "300px", src: response.data[i].images.downsized.url});
-        a.html(img);
-        
-        // add click event
-	    a.on("click", function() { 
-            // get the src of the image
-            var src = jQuery(image).attr("src");
 
-            // change the image
-            if(jQuery(src.split("/")).last()[0] === "giphy_s.gif")
-                jQuery(image).attr('src', src.replace('_s.gif', '.gif'));
-            else
-                jQuery(image).attr('src', src.replace('.gif', '_s.gif'));
+        var img = $('<img>');
+        img.attr({width: response.data[i].images.fixed_height_small_still.width*1.75, height: response.data[i].images.fixed_height_small_still.height*1.75, src: response.data[i].images.fixed_height_small_still.url, id: response.data[i].images.fixed_height_small_still.url});
+        //a.html(img);
+        outerdiv.append(img)
+         // add click event
+
+          // add click event
+        img.on("click", function() { 
+            // get the src of the image
+            var src = $(this).attr("src");
+            var temp = jQuery(src.split("/")).last()[0];
+            var temp2 = jQuery(temp.split("?")).first()[0];
+            // change the image (src)
+            if(temp2 === "100_s.gif") {
+                //alert("inside still image");
+                $(this).attr('src', src.replace('_s.gif', '.gif'));
+                //alert(jQuery(img).attr('src'));
+            }
+            else {
+                //alert("inside unstill image");
+                $(this).attr('src', src.replace('.gif', '_s.gif'));
+            }
         });
       }
    };
@@ -96,6 +104,18 @@
     });
    };
 
+   function createNewCatetory() {
+      var newcategory = $("#newcategory").val();
+       //create a button here
+       var button = $('<button>');
+       button.attr({value: newcategory});
+       button.on("click", function () {
+          searchGiphy(newcategory);
+        });
+        button.text(newcategory);
+        //append the button to the DOM
+        $('#buttons').append(button);
+   }
 
   </script>
   <!-- <script type="text/javascript" src="assets/javascript/giphy.js"></script> -->
