@@ -11,11 +11,11 @@
 <body>
   <div id="container">
       <aside>
-          <div>
+            <form>
             <label>enter a new category</label><br>
             <input id="newcategory" type="text" value=""><br>
-            <input class="submit" type="submit" value="Add New Category" onclick="createNewCatetory()">
-          </div>
+            <input class="submit" type="submit" value="Add New Category" onclick="createNewCatetory(event)">
+            </form>
         </aside>
     <div id="buttons">       
     </div> 
@@ -104,8 +104,11 @@
     });
    };
 
-   function createNewCatetory() {
-      var newcategory = $("#newcategory").val();
+   function createNewCatetory(event) {
+      //prevents the form from submitting
+      event.preventDefault();
+
+      var newcategory = $("#newcategory").val().trim();
        //create a button here
        var button = $('<button>');
        button.attr({value: newcategory});
@@ -115,7 +118,7 @@
         button.text(newcategory);
         //append the button to the DOM
         $('#buttons').append(button);
-   }
+   };
 
   </script>
   <!-- <script type="text/javascript" src="assets/javascript/giphy.js"></script> -->
