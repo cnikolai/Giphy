@@ -109,6 +109,9 @@
       event.preventDefault();
 
       var newcategory = $("#newcategory").val().trim();
+      if (newcategory !== "") {
+      categories.push(newcategory);
+
        //create a button here
        var button = $('<button>');
        button.attr({value: newcategory});
@@ -119,6 +122,7 @@
         //append the button to the DOM
         $('#buttons').append(button);
         $("#newcategory").val("");
+   }
    };
 
   </script>
